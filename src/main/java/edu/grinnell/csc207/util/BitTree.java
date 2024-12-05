@@ -14,6 +14,8 @@ public class BitTree {
   // | Fields |
   // +--------+
 
+  private int n;
+  private BitTreeNode root;
   // +--------------+------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -22,6 +24,8 @@ public class BitTree {
    *
    */
   public BitTree(int n) {
+    this.n = n;
+    this.root = new BitTreeInteriorNode();
   } // BitTree(int)
 
   // +---------------+-----------------------------------------------
