@@ -8,7 +8,7 @@ public class BitTreeInteriorNode implements BitTreeNode {
   BitTreeNode right;
 
   public BitTreeInteriorNode() {
-    this.left = left;
-    this.right = right;
+    this.left = null;
+    this.right = null;
   }
 }

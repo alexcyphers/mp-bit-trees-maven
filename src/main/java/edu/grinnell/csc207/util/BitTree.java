@@ -74,8 +74,15 @@ public class BitTree {
       // } // if/else
     } // for-loop
 
-    if(curr instanceof BitTreeLeaf) {
+    if (curr instanceof BitTreeLeaf) {
       ((BitTreeLeaf) curr).value = value;
+    } else {
+      BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
+      if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
+        node.left = new BitTreeLeaf(value);
+      } else {
+        node.right = new BitTreeLeaf(value);
+      } // if/else
     }
   } // set(String, String)
 
