@@ -4,8 +4,8 @@ import java.io.PrintWriter;
 
 public class BitTreeInteriorNode implements BitTreeNode {
 
-  private BitTreeNode left;
-  private BitTreeNode right;
+  BitTreeNode left;
+  BitTreeNode right;
 
   public BitTreeInteriorNode() {
     this.left = left;

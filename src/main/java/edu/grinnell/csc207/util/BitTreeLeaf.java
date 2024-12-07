@@ -4,8 +4,7 @@ import java.io.PrintWriter;
 
 public class BitTreeLeaf implements BitTreeNode {
 
-
-  private String value;
+  String value;
 
   public BitTreeLeaf(String value) {
     this.value = value;
