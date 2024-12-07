@@ -168,9 +168,13 @@ public class BitTree {
     BufferedReader reader = new BufferedReader(new InputStreamReader(source));
     String line;
     while ((line = reader.readLine()) != null) {
+      System.out.println("Processing line " + line);
       String[] parts = line.split(",");
       if (parts.length == 2) {
+        System.out.println("Loading: " + parts[0] + " -> " + parts[1]);
         set(parts[0], parts[1]);
+      } else {
+        System.out.println("Skipping " + line);
       }
     }
   } // load(InputStream)

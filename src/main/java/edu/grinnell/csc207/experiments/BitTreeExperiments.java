@@ -141,7 +141,13 @@ public class BitTreeExperiments {
     pen.println("Experiment 02");
     pen.println("-------------");
     BitTree b2aTree = new BitTree(6);
-    InputStream b2aStream = new ByteArrayInputStream(b2a.getBytes());
+    String b2z = "100000,A\n"
+      + "110000,B\n"
+      + "100100,C\n"
+      + "100110,D\n"
+      + "100010,E\n"
+      + "110100,F\n";
+    InputStream b2aStream = new ByteArrayInputStream(b2z.getBytes());
     try {
       b2aTree.load(b2aStream);
       b2aStream.close();
