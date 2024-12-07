@@ -46,26 +46,27 @@ public class BitTree {
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
-      if(!(curr instanceof BitTreeInteriorNode)) {
-        throw new IllegalStateException("Illegal state");
-      }
       BitTreeInteriorNode interiorNode = (BitTreeInteriorNode) curr;
 
       if (bits.charAt(i) == '0') {
-        if (interiorNode.left == null) {
+        if (interiorNode.left == null && i == (bits.length() - 1)) {
+          interiorNode.left = new BitTreeLeaf(value);
+        } else if (interiorNode.left == null) {
           interiorNode.left = new BitTreeInteriorNode();
-        } // if
+        } // if/else
         curr = interiorNode.left;
       } else {
-        if (interiorNode.right == null) {
+        if (interiorNode.right == null && i == (bits.length() - 1)) {
+          interiorNode.right = new BitTreeLeaf(value);
+        } else if (interiorNode.right == null) {
           interiorNode.right = new BitTreeInteriorNode();
-        } // if
+        } // if/else
         curr = interiorNode.right;
       } // if/else
 
 
       
-      //BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
+      // BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
 
       // if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
       //   node.left = new BitTreeLeaf(value);
@@ -76,14 +77,14 @@ public class BitTree {
 
     if (curr instanceof BitTreeLeaf) {
       ((BitTreeLeaf) curr).value = value;
-    } else {
-      BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
-      if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
-        node.left = new BitTreeLeaf(value);
-      } else {
-        node.right = new BitTreeLeaf(value);
-      } // if/else
-    }
+    } 
+    //   BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
+    //   if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
+    //     node.left = new BitTreeLeaf(value);
+    //   } else {
+    //     node.right = new BitTreeLeaf(value);
+    //   } // if/else
+    // }
   } // set(String, String)
 
 
@@ -92,9 +93,15 @@ public class BitTree {
    *
    */
   public String get(String bits) {
+    if(bits.length() != n) {
+      throw new IndexOutOfBoundsException("Bit length not equal to n");
+    }
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
+      // if (!(curr instanceof BitTreeInteriorNode)) {
+      //   throw new IndexOutOfBoundsException("");
+      // }
       BitTreeInteriorNode interiorNode = (BitTreeInteriorNode) curr;
 
       if (bits.charAt(i) == '0') {
@@ -102,8 +109,17 @@ public class BitTree {
       } else {
         curr = interiorNode.right;
       } // if/else
+
+      if (curr == null) {
+        throw new IndexOutOfBoundsException("curr is null");
+      }
     } // for-loop
-    return ((BitTreeLeaf) curr).value;
+
+    if (curr instanceof BitTreeLeaf) {
+      return ((BitTreeLeaf) curr).value;
+    } else {
+      throw new IndexOutOfBoundsException("curr not a leaf");
+    }
   } // get(String, String)
 
   /**
