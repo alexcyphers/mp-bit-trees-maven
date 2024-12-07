@@ -35,6 +35,22 @@ public class BitTree {
   // | Local helpers |
   // +---------------+
 
+  public void validate(String bits) {
+    if (bits.length() < n) {
+      throw new IndexOutOfBoundsException("Bits length is too short");
+    } else if (bits.length() > n) {
+      throw new IndexOutOfBoundsException("Bits length is too long");
+    }
+
+    for (int i = 0; i < bits.length(); i++) {
+      char c = bits.charAt(i);
+      if (c != '0' && c != '1') {
+        throw new IllegalArgumentException("Invalid character");
+      }
+    }
+  }
+
+
   // +---------+-----------------------------------------------------
   // | Methods |
   // +---------+
@@ -43,6 +59,7 @@ public class BitTree {
    *
    */
   public void set(String bits, String value) {
+    validate(bits);
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
@@ -93,9 +110,8 @@ public class BitTree {
    *
    */
   public String get(String bits) {
-    if(bits.length() != n) {
-      throw new IndexOutOfBoundsException("Bit length not equal to n");
-    }
+    validate(bits);
+
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
@@ -111,7 +127,7 @@ public class BitTree {
       } // if/else
 
       if (curr == null) {
-        throw new IndexOutOfBoundsException("curr is null");
+        throw new IndexOutOfBoundsException("Invalid Key");
       }
     } // for-loop
 
