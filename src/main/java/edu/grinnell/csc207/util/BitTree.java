@@ -37,9 +37,9 @@ public class BitTree {
 
   public void validate(String bits) {
     if (bits.length() < n) {
-      throw new IndexOutOfBoundsException("Bits length is too short");
+      throw new IndexOutOfBoundsException("Bits length is too short: " + bits.length());
     } else if (bits.length() > n) {
-      throw new IndexOutOfBoundsException("Bits length is too long");
+      throw new IndexOutOfBoundsException("Bits length is too long: " + bits.length());
     }
 
     for (int i = 0; i < bits.length(); i++) {
@@ -66,18 +66,22 @@ public class BitTree {
       BitTreeInteriorNode interiorNode = (BitTreeInteriorNode) curr;
 
       if (bits.charAt(i) == '0') {
-        if (interiorNode.left == null && i == (bits.length() - 1)) {
-          interiorNode.left = new BitTreeLeaf(value);
-        } else if (interiorNode.left == null) {
-          interiorNode.left = new BitTreeInteriorNode();
-        } // if/else
+        if (interiorNode.left == null) {
+          if(i == (bits.length() - 1)) {
+            interiorNode.left = new BitTreeLeaf(value);
+          } else {
+            interiorNode.left = new BitTreeInteriorNode();
+          }
+        } 
         curr = interiorNode.left;
       } else {
-        if (interiorNode.right == null && i == (bits.length() - 1)) {
-          interiorNode.right = new BitTreeLeaf(value);
-        } else if (interiorNode.right == null) {
-          interiorNode.right = new BitTreeInteriorNode();
-        } // if/else
+        if (interiorNode.right == null) {
+          if(i == (bits.length() - 1)) {
+            interiorNode.right = new BitTreeLeaf(value);
+          } else {
+            interiorNode.right = new BitTreeInteriorNode();
+          }
+        } 
         curr = interiorNode.right;
       } // if/else
 
@@ -115,9 +119,6 @@ public class BitTree {
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
-      // if (!(curr instanceof BitTreeInteriorNode)) {
-      //   throw new IndexOutOfBoundsException("");
-      // }
       BitTreeInteriorNode interiorNode = (BitTreeInteriorNode) curr;
 
       if (bits.charAt(i) == '0') {
@@ -127,7 +128,7 @@ public class BitTree {
       } // if/else
 
       if (curr == null) {
-        throw new IndexOutOfBoundsException("Invalid Key");
+        throw new IndexOutOfBoundsException("Invalid Key " + bits);
       }
     } // for-loop
 
@@ -168,15 +169,13 @@ public class BitTree {
     BufferedReader reader = new BufferedReader(new InputStreamReader(source));
     String line;
     while ((line = reader.readLine()) != null) {
-      System.out.println("Processing line " + line);
       String[] parts = line.split(",");
       if (parts.length == 2) {
-        System.out.println("Loading: " + parts[0] + " -> " + parts[1]);
-        set(parts[0], parts[1]);
+        set(parts[0].trim(), parts[1].trim());
       } else {
         System.out.println("Skipping " + line);
       }
-    }
+    } // while
   } // load(InputStream)
 
 } // class BitTree

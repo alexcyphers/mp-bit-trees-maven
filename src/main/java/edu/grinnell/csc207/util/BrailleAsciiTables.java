@@ -3,6 +3,7 @@ package edu.grinnell.csc207.util;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.Character;
 
 /**
  *
@@ -205,7 +206,18 @@ public class BrailleAsciiTables {
    *
    */
   public static String toBraille(char letter) {
-    return "";  // STUB
+     if (null == a2bTree) {
+      a2bTree = new BitTree(8);
+      InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
+      try {
+        a2bTree.load(a2bStream);
+        a2bStream.close();
+      } catch (IOException e) {
+        // We don't care if we can't close the stream.
+      } // try/catch
+    } // if
+    String bits = "0" + Integer.toBinaryString((int) letter);
+    return a2bTree.get(bits);
   } // toBraille(char)
 
   /**
@@ -223,13 +235,23 @@ public class BrailleAsciiTables {
         // We don't care if we can't close the stream.
       } // try/catch
     } // if
-    return "";  // STUB
+    return b2aTree.get(bits);
   } // toAscii(String)
 
   /**
    *
    */
   public static String toUnicode(String bits) {
-    return "";  // STUB
+    if (null == b2uTree) {
+      b2uTree = new BitTree(6);
+      InputStream b2uStream = new ByteArrayInputStream(b2u.getBytes());
+      try {
+        b2uTree.load(b2uStream);
+        b2uStream.close();
+      } catch (IOException e) {
+        // We don't care if we can't close the stream.
+      } // try/catch
+    } // if
+    return b2uTree.get(bits);
   } // toUnicode(String)
 } // BrailleAsciiTables

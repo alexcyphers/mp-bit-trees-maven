@@ -141,13 +141,7 @@ public class BitTreeExperiments {
     pen.println("Experiment 02");
     pen.println("-------------");
     BitTree b2aTree = new BitTree(6);
-    String b2z = "100000,A\n"
-      + "110000,B\n"
-      + "100100,C\n"
-      + "100110,D\n"
-      + "100010,E\n"
-      + "110100,F\n";
-    InputStream b2aStream = new ByteArrayInputStream(b2z.getBytes());
+    InputStream b2aStream = new ByteArrayInputStream(b2a.getBytes());
     try {
       b2aTree.load(b2aStream);
       b2aStream.close();
@@ -159,7 +153,7 @@ public class BitTreeExperiments {
     get(pen, b2aTree, "100100");
     get(pen, b2aTree, "100110");
     get(pen, b2aTree, "100010");
-    get(pen, b2aTree, "101000");
+    get(pen, b2aTree, "101000"); // Expected Fail
     pen.println("Contents:");
     b2aTree.dump(pen);
     separator(pen);
