@@ -25,6 +25,10 @@ public class BrailleASCII {
     PrintWriter pen = new PrintWriter(System.out, true);
     String target = "";
 
+    if (args.length > 2) {
+      throw new IllegalArgumentException("There should only be two command line parameters");
+    } // if
+
     try {
       for (int i = 0; i < args.length; i++) {
         if (i == 0) {
@@ -37,7 +41,7 @@ public class BrailleASCII {
             } // for-loop
           } else if (target.equals("ascii")) {
             if (args[i].length() % 6 != 0) {
-              throw new IllegalArgumentException("Length for braille bit string must be a multiple of 6.");
+              throw new IllegalArgumentException("Bit string length must be a multiple of 6");
             } // if
 
             for (int j = 0; j < args[i].length(); j += 6) {
@@ -55,12 +59,14 @@ public class BrailleASCII {
           } // if/else
         } // if/else
       } // for-loop
+      pen.println();
     } catch (IllegalArgumentException e) {
       pen.println("Error: " + e.getMessage());
+    } catch (IndexOutOfBoundsException e) {
+      pen.println("\nError: " + e.getMessage());
     } catch (Exception e) {
-      pen.println("Error " + e.getMessage());
+      pen.println("Error: " + e.getMessage());
     } // try/catch
-    pen.println();
     pen.close();
   } // main(String[]
 } // class BrailleASCII
