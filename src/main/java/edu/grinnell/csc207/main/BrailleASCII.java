@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import edu.grinnell.csc207.util.BrailleAsciiTables;
 
 /**
+ * Main class for making conversions between ascii, braille, and unicode.
  *
+ * @author Alex Cyphers
  */
 public class BrailleASCII {
   // +------+--------------------------------------------------------
@@ -13,7 +15,11 @@ public class BrailleASCII {
   // +------+
 
   /**
+   * Main method to take command line arguments to convert between ascii, braille,
+   * and unicode.
    *
+   * @param args used for reading inputs.
+   * @throws IllegalArgumentException if the input is invalid.
    */
   public static void main(String[] args) {
     PrintWriter pen = new PrintWriter(System.out, true);
@@ -21,7 +27,6 @@ public class BrailleASCII {
 
     try {
       for (int i = 0; i < args.length; i++) {
-        String line = args[i];
         if (i == 0) {
           target = args[i];
         } else {
@@ -35,7 +40,7 @@ public class BrailleASCII {
               throw new Exception("Invalid Length");
             } // if
 
-            for (int j = 0; j < args[i].length(); j+= 6) {
+            for (int j = 0; j < args[i].length(); j += 6) {
               String bits = args[i].substring(j, j + 6);
               pen.print(BrailleAsciiTables.toAscii(bits));
             } // for-loop
@@ -47,14 +52,13 @@ public class BrailleASCII {
               char h2u = (char) Integer.parseInt(unicode, 16);
               pen.print(h2u);
             } // for-loop
-          }
-        }
-      }
+          } // if/else
+        } // if/else
+      } // for-loop
     } catch (Exception e) {
-      pen.print("Runtime Exception" + e.getMessage());
+      throw new RuntimeException();
     } // try/catch
     pen.println();
     pen.close();
   } // main(String[]
-
 } // class BrailleASCII

@@ -174,8 +174,7 @@ public class BitTreeExperiments {
 
     experiment01(pen);
     experiment02(pen);
-    
+
     pen.close();
   } // main(String[])
-
 } // class BitTreeExperiments

@@ -3,10 +3,9 @@ package edu.grinnell.csc207.util;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.IOException;
-import java.lang.Character;
 
 /**
- *
+ * Provides methods for converting between ascii, braille, and unicode.
  *
  * @author Alex Cyphers
  * @author Samuel A. Rebelsky
@@ -19,7 +18,7 @@ public class BrailleAsciiTables {
   /**
    * Conversions from ASCII to braille.
    */
-  static final String a2b = 
+  static final String a2b =
       "01000001,100000\n"
       + "01000010,110000\n"
       + "01000011,100100\n"
@@ -180,17 +179,17 @@ public class BrailleAsciiTables {
   // +---------------+
 
   /**
-   *
+   * Field for the ascii to braille bit tree.
    */
   static BitTree a2bTree = null;
 
   /**
-   *
+   * Field for the braille to ascii bit tree.
    */
   static BitTree b2aTree = null;
 
   /**
-   *
+   * Field for the braille to unicode bit tree.
    */
   static BitTree b2uTree = null;
 
@@ -203,10 +202,17 @@ public class BrailleAsciiTables {
   // +----------------+
 
   /**
+   * Converts an ascii character into a 6-bit string
+   * corresponding with its braille character.
    *
+   * @param letter
+   *    ascii character being converted to braille 6-bit string.
+   *
+   * @return a 6-bit braille string.
    */
   public static String toBraille(char letter) {
-     if (null == a2bTree) {
+    // Make sure we've loaded the ASCII-to-Braille tree.
+    if (null == a2bTree) {
       a2bTree = new BitTree(8);
       InputStream a2bStream = new ByteArrayInputStream(a2b.getBytes());
       try {
@@ -217,6 +223,7 @@ public class BrailleAsciiTables {
       } // try/catch
     } // if
     String bits = Integer.toBinaryString((int) letter);
+    // Ensures the letters bit string is 8 bits
     while (bits.length() < 8) {
       bits = "0" + bits;
     } // while-loop
@@ -224,7 +231,13 @@ public class BrailleAsciiTables {
   } // toBraille(char)
 
   /**
+   * Converts a 6-bit string representing a braille character to
+   * its corresponding ascii character.
    *
+   * @param bits
+   *    A 6-bit string representing a braille character.
+   *
+   * @return an ascii character.
    */
   public static String toAscii(String bits) {
     // Make sure we've loaded the braille-to-ASCII tree.
@@ -242,7 +255,13 @@ public class BrailleAsciiTables {
   } // toAscii(String)
 
   /**
+   * Converts a 6-bit string representing a braille character to
+   * to the corresponding unicode braille character.
    *
+   * @param bits
+   *    A 6-bit string representing a braille character.
+   *
+   * @return unicode braille character.
    */
   public static String toUnicode(String bits) {
     if (null == b2uTree) {

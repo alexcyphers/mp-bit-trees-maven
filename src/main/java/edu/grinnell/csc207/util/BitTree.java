@@ -10,7 +10,7 @@ import java.io.PrintWriter;
  * Trees intended to be used in storing mappings between fixed-length
  * sequences of bits and corresponding values.
  *
- * @author Your Name Here
+ * @author Alex Cyphers
  */
 public class BitTree {
   // +--------+------------------------------------------------------
@@ -18,23 +18,26 @@ public class BitTree {
   // +--------+
 
   /**
-   * 
+   * The number of bits used for the bit tree.
    */
-  private int n;
+  private int numBits;
 
   /**
-   * 
+   * The root of the bit tree.
    */
   private BitTreeNode root;
+
   // +--------------+------------------------------------------------
   // | Constructors |
   // +--------------+
 
   /**
+   * Constructor for a tree which stores mappings from strings of bits to strings.
    *
+   * @param n number of bits stored in the tree.
    */
   public BitTree(int n) {
-    this.n = n;
+    this.numBits = n;
     this.root = new BitTreeInteriorNode();
   } // BitTree(int)
 
@@ -43,13 +46,15 @@ public class BitTree {
   // +---------------+
 
   /**
+   * Validates that the string of bits is the right size and
+   * contains only 1s and 0s.
    *
-   * @param bits
+   * @param bits the bits in the string.
    */
   public void validate(String bits) {
-    if (bits.length() < n) {
+    if (bits.length() < numBits) {
       throw new IndexOutOfBoundsException("Bits length is too short: " + bits);
-    } else if (bits.length() > n) {
+    } else if (bits.length() > numBits) {
       throw new IndexOutOfBoundsException("Bits length is too long: " + bits);
     } // if/else-if
 
@@ -67,12 +72,19 @@ public class BitTree {
   // +---------+
 
   /**
+   * Follows the path through tree from the string of bits, adding
+   * nodes when appropriate, and adds or replaces the value at the
+   * end with the given value.
    *
-   * @param bits
-   * @param value
+   * @param bits the bit string to map through.
+   * @param value the value associated with the string of bits.
+   *
+   * @throws IndexOutOfBoundsException if the string of bits is too short or long.
    */
   public void set(String bits, String value) {
+    // Check if string of bits is valid.
     validate(bits);
+
     BitTreeNode curr = root;
 
     for (int i = 0; i < bits.length(); i++) {
@@ -106,11 +118,19 @@ public class BitTree {
 
 
   /**
+   * Follows a path through the tree from the string of
+   * bits to return the value associated with the bit
+   * string.
    *
-   * @param bits
-   * @return
+   * @param bits the string of bits to search.
+   *
+   * @return the value associated with the string of bits
+   *
+   * @throws IndexOutOfBoundsException
+   *    if the bit string is invalid or no value in the tree is associated with the bits.
    */
   public String get(String bits) {
+    // Check if string of bits is valid.
     validate(bits);
 
     BitTreeNode curr = root;
@@ -138,23 +158,33 @@ public class BitTree {
 
 
   /**
+   * Prints out the contents of the tree in CSV format.
    *
-   * @param pen
+   * @param pen used to print the contents of the tree.
    */
   public void dump(PrintWriter pen) {
     dumpHelper((BitTreeInteriorNode) root, "", pen);
   } // dump(PrintWriter)
 
-  public void dumpHelper(BitTreeNode value, String parent, PrintWriter pen) {
-    if (value instanceof BitTreeLeaf) {
-      pen.println(parent + "," + ((BitTreeLeaf) value).value);
-    } else if (value instanceof BitTreeInteriorNode) {
-      BitTreeInteriorNode node = (BitTreeInteriorNode) value;
-      if (node.left != null) {
-        dumpHelper(node.left, parent + "0", pen);
+
+  /**
+   * Recursively traverses through the tree to print its contents
+   * in CSV format.
+   *
+   * @param node current node being checked.
+   * @param bits the bit string leading to the node.
+   * @param pen used to print the contents of the tree.
+   */
+  public void dumpHelper(BitTreeNode node, String bits, PrintWriter pen) {
+    if (node instanceof BitTreeLeaf) {
+      pen.println(bits + "," + ((BitTreeLeaf) node).value);
+    } else if (node instanceof BitTreeInteriorNode) {
+      BitTreeInteriorNode interiorNode = (BitTreeInteriorNode) node;
+      if (interiorNode.left != null) {
+        dumpHelper(interiorNode.left, bits + "0", pen);
       } // if
-      if (node.right != null) {
-        dumpHelper(node.right, parent + "1", pen);
+      if (interiorNode.right != null) {
+        dumpHelper(interiorNode.right, bits + "1", pen);
       } // if
     } // if/else
   } // dumpHelper(BitTreeNode, String, PrintWriter)
