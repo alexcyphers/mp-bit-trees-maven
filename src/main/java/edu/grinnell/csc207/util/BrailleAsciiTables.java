@@ -274,6 +274,8 @@ public class BrailleAsciiTables {
         // We don't care if we can't close the stream.
       } // try/catch
     } // if
-    return b2uTree.get(bits);
+    String unicodeBits = b2uTree.get(bits);
+    char h2u = (char) Integer.parseInt(unicodeBits, 16);
+    return Character.toString(h2u);
   } // toUnicode(String)
 } // BrailleAsciiTables

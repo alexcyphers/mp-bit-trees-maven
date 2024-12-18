@@ -52,16 +52,16 @@ public class BitTree {
    * @param bits the bits in the string.
    */
   public void validate(String bits) {
-    if (bits.length() < numBits) {
-      throw new IndexOutOfBoundsException("Bits length is too short: " + bits);
-    } else if (bits.length() > numBits) {
-      throw new IndexOutOfBoundsException("Bits length is too long: " + bits);
-    } // if/else-if
-
+    if (bits == null) {
+      throw new IllegalArgumentException("Bit string can't be null");
+    } // if
+    if (bits.length() != numBits) {
+      throw new IndexOutOfBoundsException("Bits length must be: " + numBits);
+    } // if
     for (int i = 0; i < bits.length(); i++) {
       char c = bits.charAt(i);
       if (c != '0' && c != '1') {
-        throw new IllegalArgumentException("Invalid character: \"" + c + "\"");
+        throw new IllegalArgumentException("Invalid character in bit string: " + c);
       } // if
     } // for-loop
   } // validate(String)
@@ -145,14 +145,14 @@ public class BitTree {
       } // if/else
 
       if (curr == null) {
-        throw new IndexOutOfBoundsException("Invalid Key: " + bits);
+        throw new IndexOutOfBoundsException("No translation found for the bit string: " + bits);
       } // if
     } // for-loop
 
     if (curr instanceof BitTreeLeaf) {
       return ((BitTreeLeaf) curr).value;
     } else {
-      throw new IndexOutOfBoundsException("curr not a leaf");
+      throw new IndexOutOfBoundsException("No translation found for the bit string: " + bits);
     } // if/else
   } // get(String, String)
 

@@ -37,7 +37,7 @@ public class BrailleASCII {
             } // for-loop
           } else if (target.equals("ascii")) {
             if (args[i].length() % 6 != 0) {
-              throw new Exception("Invalid Length");
+              throw new IllegalArgumentException("Length for braille bit string must be a multiple of 6.");
             } // if
 
             for (int j = 0; j < args[i].length(); j += 6) {
@@ -48,15 +48,17 @@ public class BrailleASCII {
             char[] letters = args[i].toCharArray();
             for (int j = 0; j < letters.length; j++) {
               String braille = BrailleAsciiTables.toBraille(letters[j]);
-              String unicode = BrailleAsciiTables.toUnicode(braille);
-              char h2u = (char) Integer.parseInt(unicode, 16);
-              pen.print(h2u);
+              pen.print(BrailleAsciiTables.toUnicode(braille));
             } // for-loop
+          } else {
+            throw new IllegalArgumentException("Invalid target: " + args[i]);
           } // if/else
         } // if/else
       } // for-loop
+    } catch (IllegalArgumentException e) {
+      pen.println("Error: " + e.getMessage());
     } catch (Exception e) {
-      throw new RuntimeException();
+      pen.println("Error " + e.getMessage());
     } // try/catch
     pen.println();
     pen.close();
