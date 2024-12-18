@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 /**
- * Trees intended to be used in storing mappings between fixed-length 
+ * Trees intended to be used in storing mappings between fixed-length
  * sequences of bits and corresponding values.
  *
  * @author Your Name Here
@@ -17,7 +17,14 @@ public class BitTree {
   // | Fields |
   // +--------+
 
+  /**
+   * 
+   */
   private int n;
+
+  /**
+   * 
+   */
   private BitTreeNode root;
   // +--------------+------------------------------------------------
   // | Constructors |
@@ -35,20 +42,24 @@ public class BitTree {
   // | Local helpers |
   // +---------------+
 
+  /**
+   *
+   * @param bits
+   */
   public void validate(String bits) {
     if (bits.length() < n) {
-      throw new IndexOutOfBoundsException("Bits length is too short: " + bits.length());
+      throw new IndexOutOfBoundsException("Bits length is too short: " + bits);
     } else if (bits.length() > n) {
-      throw new IndexOutOfBoundsException("Bits length is too long: " + bits.length());
-    }
+      throw new IndexOutOfBoundsException("Bits length is too long: " + bits);
+    } // if/else-if
 
     for (int i = 0; i < bits.length(); i++) {
       char c = bits.charAt(i);
       if (c != '0' && c != '1') {
-        throw new IllegalArgumentException("Invalid character");
-      }
-    }
-  }
+        throw new IllegalArgumentException("Invalid character: \"" + c + "\"");
+      } // if
+    } // for-loop
+  } // validate(String)
 
 
   // +---------+-----------------------------------------------------
@@ -57,6 +68,8 @@ public class BitTree {
 
   /**
    *
+   * @param bits
+   * @param value
    */
   public void set(String bits, String value) {
     validate(bits);
@@ -67,51 +80,35 @@ public class BitTree {
 
       if (bits.charAt(i) == '0') {
         if (interiorNode.left == null) {
-          if(i == (bits.length() - 1)) {
+          if (i == (bits.length() - 1)) {
             interiorNode.left = new BitTreeLeaf(value);
           } else {
             interiorNode.left = new BitTreeInteriorNode();
-          }
-        } 
+          } // if/else
+        } // if
         curr = interiorNode.left;
       } else {
         if (interiorNode.right == null) {
-          if(i == (bits.length() - 1)) {
+          if (i == (bits.length() - 1)) {
             interiorNode.right = new BitTreeLeaf(value);
           } else {
             interiorNode.right = new BitTreeInteriorNode();
-          }
-        } 
+          } // if/else
+        } // if
         curr = interiorNode.right;
       } // if/else
-
-
-      
-      // BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
-
-      // if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
-      //   node.left = new BitTreeLeaf(value);
-      // } else {
-      //   node.right = new BitTreeLeaf(value);
-      // } // if/else
     } // for-loop
-
     if (curr instanceof BitTreeLeaf) {
       ((BitTreeLeaf) curr).value = value;
-    } 
-    //   BitTreeInteriorNode node = (BitTreeInteriorNode) curr;
-    //   if (bits.substring(bits.length() - 1, bits.length()).equals("0")) {
-    //     node.left = new BitTreeLeaf(value);
-    //   } else {
-    //     node.right = new BitTreeLeaf(value);
-    //   } // if/else
-    // }
+    } // if
   } // set(String, String)
 
 
 
   /**
    *
+   * @param bits
+   * @return
    */
   public String get(String bits) {
     validate(bits);
@@ -128,19 +125,21 @@ public class BitTree {
       } // if/else
 
       if (curr == null) {
-        throw new IndexOutOfBoundsException("Invalid Key " + bits);
-      }
+        throw new IndexOutOfBoundsException("Invalid Key: " + bits);
+      } // if
     } // for-loop
 
     if (curr instanceof BitTreeLeaf) {
       return ((BitTreeLeaf) curr).value;
     } else {
       throw new IndexOutOfBoundsException("curr not a leaf");
-    }
+    } // if/else
   } // get(String, String)
+
 
   /**
    *
+   * @param pen
    */
   public void dump(PrintWriter pen) {
     dumpHelper((BitTreeInteriorNode) root, "", pen);
@@ -153,29 +152,30 @@ public class BitTree {
       BitTreeInteriorNode node = (BitTreeInteriorNode) value;
       if (node.left != null) {
         dumpHelper(node.left, parent + "0", pen);
-      }
+      } // if
       if (node.right != null) {
         dumpHelper(node.right, parent + "1", pen);
-      }
-    }
-  }
+      } // if
+    } // if/else
+  } // dumpHelper(BitTreeNode, String, PrintWriter)
 
 
   /**
-   * @throws IOException 
    *
+   * @param source
    */
-  public void load(InputStream source) throws IOException {
+  public void load(InputStream source) {
     BufferedReader reader = new BufferedReader(new InputStreamReader(source));
     String line;
-    while ((line = reader.readLine()) != null) {
-      String[] parts = line.split(",");
-      if (parts.length == 2) {
-        set(parts[0].trim(), parts[1].trim());
-      } else {
-        System.out.println("Skipping " + line);
-      }
-    } // while
+    try {
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split(",");
+        if (parts.length == 2) {
+          set(parts[0], parts[1]);
+        } // if
+      } // while
+    } catch (IOException e) {
+      // We don't care if we can't close the stream.
+    } // try/catch
   } // load(InputStream)
-
 } // class BitTree

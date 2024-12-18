@@ -8,7 +8,7 @@ import java.lang.Character;
 /**
  *
  *
- * @author Your Name Here
+ * @author Alex Cyphers
  * @author Samuel A. Rebelsky
  */
 public class BrailleAsciiTables {
@@ -216,7 +216,10 @@ public class BrailleAsciiTables {
         // We don't care if we can't close the stream.
       } // try/catch
     } // if
-    String bits = "0" + Integer.toBinaryString((int) letter);
+    String bits = Integer.toBinaryString((int) letter);
+    while (bits.length() < 8) {
+      bits = "0" + bits;
+    } // while-loop
     return a2bTree.get(bits);
   } // toBraille(char)
 

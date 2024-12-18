@@ -18,8 +18,10 @@ public class BrailleASCII {
   public static void main(String[] args) {
     PrintWriter pen = new PrintWriter(System.out, true);
     String target = "";
+
     try {
       for (int i = 0; i < args.length; i++) {
+        String line = args[i];
         if (i == 0) {
           target = args[i];
         } else {
@@ -42,14 +44,14 @@ public class BrailleASCII {
             for (int j = 0; j < letters.length; j++) {
               String braille = BrailleAsciiTables.toBraille(letters[j]);
               String unicode = BrailleAsciiTables.toUnicode(braille);
-              char h2u = (char) Integer.parseInt(unicode);
+              char h2u = (char) Integer.parseInt(unicode, 16);
               pen.print(h2u);
             } // for-loop
           }
         }
       }
     } catch (Exception e) {
-      pen.print("Runtime Exception");
+      pen.print("Runtime Exception" + e.getMessage());
     } // try/catch
     pen.println();
     pen.close();
